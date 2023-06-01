@@ -10,8 +10,22 @@ const getAllTasks = async (req, res) => {
     }
 }
 
-const getTask = (req, res) => {
-    res.send('crear una sola lista de tareas');
+const getTask = async (req, res) => {
+    try {
+        const { id } = req.params
+
+        const result = await pool.query('SELECT * FROM task WHERE id = $1', [id])
+        console.log(result)
+
+        if (result.rows.length === 0)
+            return res.status(404).json({
+                message: "tarea no encontrada"
+            });
+        return res.json(result.rows[0]);
+    } catch (error) {
+        console.log(error.message);
+    }
+
 }
 
 const createTask = async (req, res) => {
@@ -22,11 +36,11 @@ const createTask = async (req, res) => {
             "INSERT INTO task (title, description) VALUES ($1, $2) RETURNING *",
             [title, description]
         );
-    
+
         res.json(result.rows[0]);
-        
+
     } catch (error) {
-        res.json({error:error.message})
+        res.json({ error: error.message })
     }
 }
 

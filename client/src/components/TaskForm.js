@@ -1,7 +1,24 @@
 import { Button, Card, CardContent, Grid, TextField, Typography } from "@mui/material"
+import { useState, useEffect } from "react";
+
 
 
 export default function TaskForm() {
+
+    const [task, setTask] = useState({
+      title: '',
+      description: '',
+    })
+
+    const handleSubmit = e =>{
+      e.preventDefault();
+      console.log(task)
+    };
+
+    const handelChange =e => {
+      setTask({...task, [e.target.name]: e.target.value});
+    }
+
   return (
     <Grid container direction="column" alignItems="center" justifyContent="center">
       <Grid item xs={3}>
@@ -12,7 +29,7 @@ export default function TaskForm() {
           }}>
           <Typography variant='5' textAlign='center' color='white'>  Create Task </Typography>
           <CardContent>
-            <form>
+            <form onSubmit={handleSubmit}>
               <TextField
                 variant='filled'
                 label='write your tittle'
@@ -20,6 +37,9 @@ export default function TaskForm() {
                   display: 'block',
                   margin: '.5rem 0'
                 }}
+
+                name="title"
+                onChange={handelChange}
                 inputProps={{style:{color:"white"}}}
                 InputLabelProps={{style:{color:"white"}}}
               />
@@ -33,6 +53,8 @@ export default function TaskForm() {
                   display: 'block',
                   margin: '.5rem 0'
                 }}
+                name="description"
+                onChange={handelChange}
                 inputProps={{style:{color:"white"}}}
                 InputLabelProps={{style:{color:"white"}}}
               />
